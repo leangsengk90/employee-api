@@ -1,0 +1,25 @@
+---
+- hosts: all
+  vars:
+    version: "{{ version }}"
+  tasks:
+    - name: Log into DockerHub
+      docker_login:
+        username: sothylorn 
+        password: "{{ registry_password }}"
+        reauthorize: yes
+    
+    - name: Start Service
+      docker_compose:
+        project_name: "emp-api"
+        recreate: smart
+        definition:
+          version: "3.5"
+          services:
+            emp-api:
+              container_name: "emp-api"
+              image: "{{ repositoryUrl }}:{{version}}"
+              restart: "always"
+              ports:
+                - "4000:4000"
+    

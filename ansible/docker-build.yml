@@ -1,0 +1,25 @@
+---
+- hosts: localhost
+  vars:
+    version: "{{ version }}"
+  tasks:
+    - name: Log into DockerHub
+      docker_login:
+        username: sothylorn 
+        password: "{{ registry_password }}"
+        reauthorize: yes
+
+    - name: Build an image and push it to a private repo
+      docker_image:
+        build:
+          path: ../
+          pull: yes
+        name: "{{ repositoryUrl }}"
+        force_tag: yes
+        force_source: yes
+        tag: "{{ version }}"
+        repository: "{{ repositoryUrl }}:{{version}}"
+        push: yes
+        source: build
+
+    
