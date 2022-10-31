@@ -1,7 +1,7 @@
 version: "3.4"
 services:
-  employee-api:
-    container_name: employee-api
+  employee-api-dara:
+    container_name: employee-api-dara
     #image: sothy/emp-api:${Version}
     build: .
     ports:
