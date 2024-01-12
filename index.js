@@ -35,7 +35,7 @@ app.listen(4000, () => {
 app.get('/version', (req, res) => {
     res.json(
         {
-        version: 'devsecops-3'
+        version: 'devsecops-4'
         }
     );
 });
