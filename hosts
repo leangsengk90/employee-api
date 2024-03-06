@@ -1,0 +1,11 @@
+[client-app]
+client-app-preprod-01.aws-xxxx
+client-app-preprod-02.aws
+client-app-preprod-03.aws
+client-app-preprod-04.aws
+
+[server-app]
+server-app-preprod-01.aws
+server-app-preprod-02.aws
+server-app-preprod-03.aws
+server-app-preprod-04.aws
