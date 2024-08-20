@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: "api"
-        image: "registry.digitalocean.com/salacyber/employee-api:uat-7"
+        image: "registry.digitalocean.com/salacyber/employee-api:prod-18"
         # resources:
           #   requests:
           #     memory: "400Mi"
