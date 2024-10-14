@@ -1,5 +1,5 @@
 # Step 1: Use the official Node.js LTS image as the base image
-FROM node:12-21-alpine AS base
+FROM node:12.21-alpine AS base
 
 # Set the working directory inside the container
 WORKDIR /usr/src/app
@@ -9,7 +9,7 @@ COPY ./ ./
 RUN npm install
 
 # Step 2: Create a new build stage for production (multi-stage build)
-FROM node:12-21-alpine AS prod
+FROM node:12.21-alpine AS prod
 
 # Set the working directory inside the container
 WORKDIR /usr/src/app
