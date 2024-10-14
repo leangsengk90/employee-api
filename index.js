@@ -24,12 +24,12 @@ app.listen(4000, () => {
         database=client.db(DATABASE);
         console.log("MongoDB Connection Successfull");
     });
-    const apm = require('elastic-apm-node').start({
-        serviceName: 'emp-api',
-        secretToken: '',
-        apiKey: '',
-        serverUrl: 'http://128.199.95.186:8200',
-      })
+    // const apm = require('elastic-apm-node').start({
+    //     serviceName: 'emp-api',
+    //     secretToken: '',
+    //     apiKey: '',
+    //     serverUrl: 'http://128.199.95.186:8200',
+    //   })
 });
 
 app.get('/version', (req, res) => {
