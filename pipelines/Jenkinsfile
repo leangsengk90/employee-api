@@ -1,0 +1,62 @@
+pipeline {
+    agent { label "built-in"}
+
+    environment {
+        PROJECT_PATH = "employee-api"
+    }
+
+    parameters {
+        string(name: 'BRANCH', defaultValue: 'master', description: 'Enter your branch!')
+    }
+
+    stages{
+        stage("Resource"){
+            steps {
+                dir("$WORKSPACE/$PROJECT_PATH"){
+                    checkout scmGit(branches: [[name: '*/${BRANCH}']], extensions: [], 
+                    userRemoteConfigs: [[url: 'https://github.com/leangsengk90/employee-api.git']])
+                }
+            }
+        }
+
+        stage("Configuration"){
+            steps {
+                sh """
+                    cp pipelines/Dockerfile $WORKSPACE/$PROJECT_PATH
+                """
+            }
+        }
+
+        stage("Build"){
+            steps {
+                dir("$WORKSPACE/$PROJECT_PATH"){
+                    withCredentials([usernamePassword(credentialsId: 'docker-registry', 
+                        passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+                        sh """
+                            docker login -u $USERNAME -p $PASSWORD
+                            docker build -t xeng/employee-api:$BUILD_NUMBER -f Dockerfile .
+                            docker push xeng/employee-api:$BUILD_NUMBER
+                        """
+                    }
+                }
+            }
+        }
+
+        stage("Deploy"){
+            steps {
+                sh """
+                    docker rm -f employee-api || true
+                    docker run -d -p 4000:4000 --name employee-api xeng/employee-api:$BUILD_NUMBER
+                """
+            }
+        }
+    }
+
+    post {
+        always {
+            echo "Clean Workspace"
+            cleanWs()
+        }
+    }
+
+}
