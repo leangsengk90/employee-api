@@ -8,7 +8,8 @@ var cors = require('cors');
 const { request } = require("express");
 
 var app = express();
-var CONNECTION_STRING = "mongodb+srv://phallabot:0963848814@cluster0.r7yu7.mongodb.net/?retryWrites=true&w=majority"
+// var CONNECTION_STRING = "mongodb+srv://phallabot:0963848814@cluster0.r7yu7.mongodb.net/?retryWrites=true&w=majority"
+var CONNECTION_STRING = "mongodb://mongoadmin:securepassword123@152.42.166.34:27017/?authSource=admin"
 var DATABASE = 'testdb';
 var database;
 app.use(bodyParser.json());
