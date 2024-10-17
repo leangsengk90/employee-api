@@ -23,6 +23,7 @@ pipeline {
             steps {
                 sh """
                     cp pipelines/Dockerfile $WORKSPACE/$PROJECT_PATH
+                    cp pipelines/docker-compose.yaml $WORKSPACE/$PROJECT_PATH
                 """
             }
         }
@@ -34,8 +35,9 @@ pipeline {
                         passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
                         sh """
                             docker login -u $USERNAME -p $PASSWORD
-                            docker build -t xeng/employee-api:$BUILD_NUMBER -f Dockerfile .
-                            docker push xeng/employee-api:$BUILD_NUMBER
+                            # docker build -t xeng/employee-api:$BUILD_NUMBER -f Dockerfile .
+                            # docker push xeng/employee-api:$BUILD_NUMBER
+                            docker compose up -d
                         """
                     }
                 }
@@ -45,8 +47,9 @@ pipeline {
         stage("Deploy"){
             steps {
                 sh """
-                    docker rm -f employee-api || true
-                    docker run -d -p 4000:4000 --name employee-api xeng/employee-api:$BUILD_NUMBER
+                    echo "Deploy Successfully!"
+                    # docker rm -f employee-api || true
+                    # docker run -d -p 4000:4000 --name employee-api xeng/employee-api:$BUILD_NUMBER
                 """
             }
         }
