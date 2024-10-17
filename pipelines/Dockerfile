@@ -9,7 +9,7 @@ COPY ./ ./
 RUN npm install
 
 # Step 2: Create a new build stage for production (multi-stage build)
-FROM node:12.21-alpine AS prod
+FROM node:12.21-alpine
 
 # Set the working directory inside the container
 WORKDIR /usr/src/app
@@ -22,4 +22,4 @@ COPY ./ ./
 EXPOSE 4000
 
 # Start the application
-CMD ["node", "index.js"]
+ENTRYPOINT ["node", "index.js"]
