@@ -1,0 +1,53 @@
+pipeline {
+    agent { label "built-in"}
+
+    environment {
+        PROJECT_PATH = "employee-api"
+    }
+
+    parameters {
+        string(name: 'BRANCH', defaultValue: 'master', description: 'Enter your branch!')
+    }
+
+    stages{
+        stage("Resource"){
+            steps {
+                dir("$WORKSPACE/$PROJECT_PATH"){
+                    checkout scmGit(branches: [[name: '*/${BRANCH}']], extensions: [], 
+                    userRemoteConfigs: [[url: 'https://github.com/leangsengk90/employee-api.git']])
+                }
+            }
+        }
+
+        stage("Configuration"){
+            steps {
+                sh """
+                    cp pipelines/Dockerfile $WORKSPACE/$PROJECT_PATH
+                    cp pipelines/docker-compose.yaml $WORKSPACE/$PROJECT_PATH
+                """
+            }
+        }
+
+        stage("Build & Deploy"){
+            steps {
+                dir("$WORKSPACE/$PROJECT_PATH"){
+                    withCredentials([usernamePassword(credentialsId: 'docker-registry', 
+                        passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+                        sh """
+                            docker login -u $USERNAME -p $PASSWORD
+                            docker compose up -d
+                        """
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            echo "Clean Workspace"
+            cleanWs()
+        }
+    }
+
+}
